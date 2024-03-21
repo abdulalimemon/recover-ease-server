@@ -38,6 +38,7 @@ async function run() {
     const newsletterCollection = db.collection("newsletter");
     const contactUsCollection = db.collection("contactUs");
     const testimonialCollection = db.collection("testimonial");
+    const volunteerCollection = db.collection("volunteer");
 
     // User Registration
     app.post("/api/v1/register", async (req, res) => {
@@ -237,6 +238,31 @@ async function run() {
       res.status(201).json({
         success: true,
         message: "Testimonial added successfully.",
+      });
+    });
+
+    // post Volunteer
+    app.post("/api/v1/volunteer", async (req, res) => {
+      const { name, email, imageUrl, phone, location } = req.body;
+
+      const existingUser = await volunteerCollection.findOne({ email });
+      if (existingUser) {
+        return res.status(400).json({
+          success: false,
+          message: "Sorry, this user is already registered as a volunteer.",
+        });
+      }
+
+      await volunteerCollection.insertOne({
+        name,
+        email,
+        imageUrl,
+        phone,
+        location,
+      });
+      res.status(201).json({
+        success: true,
+        message: "Volunteer added successfully.",
       });
     });
 
