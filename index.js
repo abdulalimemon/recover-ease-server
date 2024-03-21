@@ -37,6 +37,7 @@ async function run() {
     const supplyCollection = db.collection("supply");
     const newsletterCollection = db.collection("newsletter");
     const contactUsCollection = db.collection("contactUs");
+    const testimonialCollection = db.collection("testimonial");
 
     // User Registration
     app.post("/api/v1/register", async (req, res) => {
@@ -219,6 +220,23 @@ async function run() {
       res.status(201).json({
         success: true,
         message: "Message send successfully.",
+      });
+    });
+
+    // post testimonial
+    app.post("/api/v1/testimonial", async (req, res) => {
+      const { name, email, image, position, company, review } = req.body;
+      await testimonialCollection.insertOne({
+        name,
+        email,
+        image,
+        position,
+        company,
+        review,
+      });
+      res.status(201).json({
+        success: true,
+        message: "Testimonial added successfully.",
       });
     });
 
