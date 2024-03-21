@@ -128,6 +128,13 @@ async function run() {
       });
     });
 
+    // get donation information
+    app.get("/api/v1/donation", async (req, res) => {
+      const cursor = donationCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     // Create supply post
     app.post("/api/v1/supply", async (req, res) => {
       const { imageUrl, category, title, amount, description } = req.body;
