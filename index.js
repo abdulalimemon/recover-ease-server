@@ -243,7 +243,7 @@ async function run() {
 
     // post Volunteer
     app.post("/api/v1/volunteer", async (req, res) => {
-      const { name, email, imageUrl, phone, location } = req.body;
+      const { name, email, image, phone, location, occupation } = req.body;
 
       const existingUser = await volunteerCollection.findOne({ email });
       if (existingUser) {
@@ -256,14 +256,22 @@ async function run() {
       await volunteerCollection.insertOne({
         name,
         email,
-        imageUrl,
+        image,
         phone,
         location,
+        occupation,
       });
       res.status(201).json({
         success: true,
         message: "Volunteer added successfully.",
       });
+    });
+
+    // get volunteer
+    app.get("/api/v1/volunteer", async (req, res) => {
+      const cursor = volunteerCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
     });
 
     // Start the server
