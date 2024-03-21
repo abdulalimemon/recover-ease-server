@@ -73,6 +73,8 @@ async function run() {
 
       // Find user by email
       const user = await collection.findOne({ email });
+      
+
       if (!user) {
         return res.status(401).json({ message: "Invalid email or password" });
       }
@@ -91,6 +93,8 @@ async function run() {
           expiresIn: process.env.EXPIRES_IN,
         }
       );
+
+      
 
       res.json({
         success: true,
