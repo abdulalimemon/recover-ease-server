@@ -39,6 +39,8 @@ async function run() {
     const contactUsCollection = db.collection("contactUs");
     const testimonialCollection = db.collection("testimonial");
     const volunteerCollection = db.collection("volunteer");
+    const commentCollection = db.collection("comment");
+    
 
     // User Registration
     app.post("/api/v1/register", async (req, res) => {
@@ -277,6 +279,28 @@ async function run() {
     // get volunteer
     app.get("/api/v1/volunteer", async (req, res) => {
       const cursor = volunteerCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
+    // post comment
+    app.post("/api/v1/comment", async (req, res) => {
+      const { name, email, message } = req.body;
+
+      await commentCollection.insertOne({
+        name,
+        email,
+        message,
+      });
+      res.status(201).json({
+        success: true,
+        message: "Comment post successfully.",
+      });
+    });
+
+    // get comment
+    app.get("/api/v1/comment", async (req, res) => {
+      const cursor = commentCollection.find();
       const result = await cursor.toArray();
       res.send(result);
     });
