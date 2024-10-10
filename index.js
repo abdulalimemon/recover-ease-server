@@ -40,7 +40,6 @@ async function run() {
     const testimonialCollection = db.collection("testimonial");
     const volunteerCollection = db.collection("volunteer");
     const commentCollection = db.collection("comment");
-    
 
     // User Registration
     app.post("/api/v1/register", async (req, res) => {
@@ -59,7 +58,12 @@ async function run() {
       const hashedPassword = await bcrypt.hash(password, 10);
 
       // Insert user into the database
-      await collection.insertOne({ name, email, password: hashedPassword });
+      await collection.insertOne({
+        name,
+        email,
+        password: hashedPassword,
+        role: "user",
+      });
 
       res.status(201).json({
         success: true,
@@ -73,7 +77,6 @@ async function run() {
 
       // Find user by email
       const user = await collection.findOne({ email });
-      
 
       if (!user) {
         return res.status(401).json({ message: "Invalid email or password" });
@@ -87,14 +90,12 @@ async function run() {
 
       // Generate JWT token
       const token = jwt.sign(
-        { email: user.email, name: user.name },
+        { email: user.email, name: user.name, role: user.role },
         process.env.JWT_SECRET,
         {
           expiresIn: process.env.EXPIRES_IN,
         }
       );
-
-      
 
       res.json({
         success: true,
