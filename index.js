@@ -106,6 +106,13 @@ async function run() {
 
     // ==============================================================
 
+    // Get All users
+    app.get("/api/v1/users", async (req, res) => {
+      const cursor = collection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     // get all relief goods data
     app.get("/api/v1/all-relief-goods", async (req, res) => {
       const cursor = allReliefGoods.find();
@@ -223,6 +230,13 @@ async function run() {
       });
     });
 
+    // Get All Newsletter subscription
+    app.get("/api/v1/newsletter", async (req, res) => {
+      const cursor = newsletterCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
+    });
+
     // post Contact us
     app.post("/api/v1/contact-us", async (req, res) => {
       const { name, email, message } = req.body;
@@ -236,6 +250,13 @@ async function run() {
         success: true,
         message: "Message send successfully.",
       });
+    });
+
+    // Get All Contact us Messages
+    app.get("/api/v1/contact-us", async (req, res) => {
+      const cursor = contactUsCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
     });
 
     // post testimonial
@@ -253,6 +274,13 @@ async function run() {
         success: true,
         message: "Testimonial added successfully.",
       });
+    });
+
+    // Get All testimonial
+    app.get("/api/v1/testimonial", async (req, res) => {
+      const cursor = testimonialCollection.find();
+      const result = await cursor.toArray();
+      res.send(result);
     });
 
     // post Volunteer
